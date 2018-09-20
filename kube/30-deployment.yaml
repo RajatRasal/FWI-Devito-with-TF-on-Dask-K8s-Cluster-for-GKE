@@ -20,15 +20,15 @@ spec:
       containers:
         - name: notebook
           imagePullPolicy: Always
-          image: lihan/dask-ml:v6
-          args: ["bash", "/work/config/run.sh"]
+          image: rajatr/devito-dask-kube:latest
+          args: ["bash", "/app/config/run.sh"]
           resources:
             requests:
-              cpu: "1000m"
-              memory: "8000Mi"
+              cpu: "1"
+              memory: "1500Mi"
             limits:
-              cpu: "1000m"
-              memory: "8000Mi"
+              cpu: "1"
+              memory: "1500Mi"
           ports:
             - name: http
               containerPort: 8888
