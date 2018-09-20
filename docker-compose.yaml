@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+
+  devito-dask-kube:
+
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    image: rajatr/devito-dask-kube
+
+    ports:
+      - 8888:8888
