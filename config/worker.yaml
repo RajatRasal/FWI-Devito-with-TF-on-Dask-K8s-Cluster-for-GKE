@@ -1,0 +1,18 @@
+kind: Pod
+metadata:
+  labels:
+    role: worker
+spec:
+  restartPolicy: Never
+  containers:
+  - image: rajatr/devito-dask-kube:latest
+    imagePullPolicy: Always
+    args: [dask-worker, $(DASK_SCHEDULER_ADDRESS), --nthreads, '1', --no-bokeh, --memory-limit, 2GB, --death-timeout, '60']
+    name: dask-worker
+    resources:
+      requests:
+        cpu: "1"
+        memory: 2G
+      limits:
+        cpu: "1"
+        memory: 2G

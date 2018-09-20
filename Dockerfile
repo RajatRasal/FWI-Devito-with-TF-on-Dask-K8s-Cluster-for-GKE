@@ -9,10 +9,11 @@ WORKDIR /app
 
 ADD https://github.com/opesci/devito/archive/v3.2.0.tar.gz . 
 RUN tar -xzf v3.2.0.tar.gz
-RUN rm -rf v3.2.0.tar.gz 
 RUN mv devito-3.2.0/* . 
+RUN rm -rf v3.2.0.tar.gz devito-3.2.0
 
 COPY config config
+COPY dask_kubernetes_demo.ipynb dask_kubernetes_demo.ipynb 
 
 # Install Tini that necessary to properly run the notebook service in docker
 # http://jupyter-notebook.readthedocs.org/en/latest/public_server.html#docker-cmd
