@@ -20,7 +20,7 @@ spec:
       containers:
         - name: notebook
           imagePullPolicy: Always
-          image: rajatr/devito-dask-kube:latest
+					image: rajatr/devito-dask-kube-scheduler:latest
           args: ["bash", "/app/config/run.sh"]
           resources:
             requests:

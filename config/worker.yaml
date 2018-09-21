@@ -5,7 +5,7 @@ metadata:
 spec:
   restartPolicy: Never
   containers:
-  - image: rajatr/devito-dask-kube:latest
+  - image: rajatr/devito-dask-kube-worker:latest
     imagePullPolicy: Always
     args: [dask-worker, $(DASK_SCHEDULER_ADDRESS), --nthreads, '1', --no-bokeh, --memory-limit, 2GB, --death-timeout, '60']
     name: dask-worker

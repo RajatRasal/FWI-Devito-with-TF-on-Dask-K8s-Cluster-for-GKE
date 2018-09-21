@@ -6,7 +6,7 @@ services:
 
     build:
       context: .
-      dockerfile: DockerfileScheduler
+      dockerfile: docker/DockerfileScheduler
 
     image: rajatr/devito-dask-kube-scheduler
 
