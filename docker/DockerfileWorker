@@ -5,13 +5,14 @@ RUN apt-get update && apt-get install -y -q \
     mpich \
     libmpich-dev
 
-ADD https://github.com/opesci/devito/archive/v3.2.0.tar.gz . 
-RUN tar -xzf v3.2.0.tar.gz
-RUN mv devito-3.2.0/* . 
-RUN rm -rf v3.2.0.tar.gz devito-3.2.0
+COPY devito.tar.gz .
+RUN tar -xzf devito.tar.gz 
+RUN mv Devito/* . 
+RUN rm -rf devito.tar.gz Devito
 
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt && \ 
+    pip install --no-cache-dir numpy==1.14.4 && \ 
     pip install -e .
 
 ENV DEVITO_ARCH="gcc-4.9"
