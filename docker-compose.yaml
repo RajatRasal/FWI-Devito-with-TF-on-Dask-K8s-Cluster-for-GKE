@@ -2,13 +2,24 @@ version: '3'
 
 services:
 
-  devito-dask-kube:
+  scheduler:
 
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: DockerfileScheduler
 
-    image: rajatr/devito-dask-kube
+    image: rajatr/devito-dask-kube-scheduler
 
+    ports:
+      - 8888:8888
+
+  worker:
+  
+    build:
+      context: .
+      dockerfile: docker/DockerfileWorker
+  
+    image: rajatr/devito-dask-kube-worker
+  
     ports:
       - 8888:8888
