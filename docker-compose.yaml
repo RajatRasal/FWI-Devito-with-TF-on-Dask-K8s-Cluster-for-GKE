@@ -23,3 +23,25 @@ services:
   
     ports:
       - 8888:8888
+
+  scheduler_gcloud:
+
+    build:
+      context: .
+      dockerfile: docker/DockerfileScheduler
+
+    image: gcr.io/${PROJECT_ID}/devito-dask-kube-scheduler
+
+    ports:
+      - 8888:8888
+
+  worker_gcloud:
+  
+    build:
+      context: .
+      dockerfile: docker/DockerfileWorker
+  
+    image: gcr.io/${PROJECT_ID}/devito-dask-kube-worker
+  
+    ports:
+      - 8888:8888

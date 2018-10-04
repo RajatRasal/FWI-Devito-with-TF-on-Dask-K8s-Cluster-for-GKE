@@ -1,0 +1,48 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: dask-notebook
+  namespace: default
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: dask-notebook
+    spec:
+      terminationGracePeriodSeconds: 60
+      containers:
+        - name: notebook
+          imagePullPolicy: Always
+          image: gcr.io/devito-with-tf-and-dask-dist/devito-dask-kube-scheduler:latest
+          args: ["bash", "/app/config/run.sh"]
+          resources:
+            requests:
+              cpu: "1"
+              memory: "1500Mi"
+            limits:
+              cpu: "1"
+              memory: "1500Mi"
+          ports:
+            - name: http
+              containerPort: 8888
+            - name: lab-http
+              containerPort: 8889
+            - name: status-http
+              containerPort: 8787
+            - name: tfboard-http
+              containerPort: 6006
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8888
+            periodSeconds: 10
+            timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 5

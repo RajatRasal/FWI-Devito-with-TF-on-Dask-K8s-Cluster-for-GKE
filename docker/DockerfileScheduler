@@ -1,16 +1,12 @@
 FROM python:3.6
 MAINTAINER Rajat Rasal <rrr2417@ic.ac.uk>
 
-WORKDIR /app
-
-COPY devito.tar.gz .
+COPY devito.tar.gz / 
 RUN tar -xzf devito.tar.gz
-RUN mv Devito/* . 
-RUN rm -rf devito.tar.gz Devito
+RUN rm -rf devito.tar.gz
 
-COPY config config
-COPY notebooks/dask_kubernetes_demo.ipynb dask_kubernetes_demo.ipynb 
-COPY notebooks/fwi.ipynb fwi.ipynb 
+COPY config app/config
+COPY notebooks/* app/ 
 
 # Install Tini that necessary to properly run the notebook service in docker
 # http://jupyter-notebook.readthedocs.org/en/latest/public_server.html#docker-cmd
@@ -48,18 +44,21 @@ RUN apt-get -y install gcc-$gccvers g++-$gccvers
 # Set up alternatives
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-$gccvers 10
 
-WORKDIR /
-
 RUN python3 -m venv /venv && \
     /venv/bin/pip install --no-cache-dir --upgrade pip && \
     /venv/bin/pip install --no-cache-dir jupyter && \
-    /venv/bin/pip install --no-cache-dir -r /app/requirements.txt && \
+    /venv/bin/pip install --no-cache-dir -r /Devito/requirements.txt && \
+    /venv/bin/pip install --no-cache-dir -e /Devito/ && \
     /venv/bin/pip install --no-cache-dir dask-kubernetes && \ 
     /venv/bin/pip install --no-cache-dir numpy==1.14.4 && \
-    /venv/bin/pip install --no-cache-dir tensorflow 
+    /venv/bin/pip install --no-cache-dir tensorflow && \ 
+    /venv/bin/pip install --no-cache-dir --upgrade google-cloud-storage && \
+    /venv/bin/pip install --no-cache-dir jgscm 
 
 ENV DEVITO_ARCH="gcc-4.9"
 ENV DEVITO_OPENMP="0"
+ENV GOOGLE_APPLICATION_CREDENTIALS="config/google_app_creds.json"
 
+WORKDIR /app
 EXPOSE 8888
 ENTRYPOINT ["/usr/bin/tini", "--"]

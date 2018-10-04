@@ -10,10 +10,14 @@ RUN tar -xzf devito.tar.gz
 RUN mv Devito/* . 
 RUN rm -rf devito.tar.gz Devito
 
+COPY config/google_app_creds.json google_app_creds.json
+
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt && \ 
-    pip install --no-cache-dir numpy==1.14.4 && \ 
+    pip install --no-cache-dir numpy==1.14.4 && \
+    pip install --no-cache-dir --upgrade google-cloud-storage && \
     pip install -e .
 
 ENV DEVITO_ARCH="gcc-4.9"
 ENV DEVITO_OPENMP="0"
+ENV GOOGLE_APPLICATION_CREDENTIALS="google_app_creds.json"
