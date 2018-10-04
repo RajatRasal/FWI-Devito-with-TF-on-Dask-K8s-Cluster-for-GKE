@@ -7,12 +7,12 @@ spec:
   containers:
   - image: rajatr/devito-dask-kube-worker:latest
     imagePullPolicy: Always
-    args: [dask-worker, $(DASK_SCHEDULER_ADDRESS), --nthreads, '1', --no-bokeh, --memory-limit, 2GB, --death-timeout, '60']
+    args: [dask-worker, $(DASK_SCHEDULER_ADDRESS), --nthreads, '1', --no-bokeh, --memory-limit, 1GB, --death-timeout, '60']
     name: dask-worker
     resources:
       requests:
-        cpu: "1"
-        memory: 2G
+        cpu: 200m
+        memory: 1000Mi
       limits:
-        cpu: "1"
-        memory: 2G
+        cpu: 200m
+        memory: 1000Mi
