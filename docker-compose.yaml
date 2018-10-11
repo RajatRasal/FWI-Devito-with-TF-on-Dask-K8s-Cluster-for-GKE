@@ -40,7 +40,7 @@ services:
     build:
       context: .
       dockerfile: docker/DockerfileWorker
-  
+
     image: gcr.io/${PROJECT_ID}/devito-dask-kube-worker
   
     ports:
