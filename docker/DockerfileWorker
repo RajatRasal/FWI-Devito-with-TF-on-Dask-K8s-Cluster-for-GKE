@@ -1,9 +1,18 @@
-FROM daskdev/dask:latest
+FROM python:3.6
 MAINTAINER Rajat Rasal <rrr2417@ic.ac.uk>
 
 RUN apt-get update && apt-get install -y -q \
     mpich \
     libmpich-dev
+
+RUN echo "deb http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu xenial main" > /etc/apt/sources.list.d/ubuntu-toolchain-r-ppa-xenial.list
+RUN gpg --keyserver keyserver.ubuntu.com --recv 1E9377A2BA9EF27F
+RUN gpg --export --armor BA9EF27F | apt-key add -
+
+RUN apt-get update
+RUN apt-get -y dist-upgrade
+
+RUN apt-get -y install wget bzip2 git make
 
 COPY devito.tar.gz .
 RUN tar -xzf devito.tar.gz 
@@ -12,12 +21,18 @@ RUN rm -rf devito.tar.gz Devito
 
 COPY config/google_app_creds.json google_app_creds.json
 
+ARG gccvers=4.9
+ENV DEVITO_ARCH=gcc-$gccvers
+
+RUN apt-get -y install gcc-$gccvers g++-$gccvers
+
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-$gccvers 10
+
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt && \ 
     pip install --no-cache-dir numpy==1.14.4 && \
     pip install --no-cache-dir --upgrade google-cloud-storage && \
     pip install -e .
 
-ENV DEVITO_ARCH="gcc-4.9"
 ENV DEVITO_OPENMP="0"
 ENV GOOGLE_APPLICATION_CREDENTIALS="google_app_creds.json"

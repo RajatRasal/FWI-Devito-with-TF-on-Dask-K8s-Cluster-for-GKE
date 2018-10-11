@@ -53,7 +53,8 @@ RUN python3 -m venv /venv && \
     /venv/bin/pip install --no-cache-dir numpy==1.14.4 && \
     /venv/bin/pip install --no-cache-dir tensorflow && \ 
     /venv/bin/pip install --no-cache-dir --upgrade google-cloud-storage && \
-    /venv/bin/pip install --no-cache-dir jgscm 
+    /venv/bin/pip install --no-cache-dir jgscm && \
+    /venv/bin/pip install --no-cache-dir bokeh
 
 ENV DEVITO_ARCH="gcc-4.9"
 ENV DEVITO_OPENMP="0"
