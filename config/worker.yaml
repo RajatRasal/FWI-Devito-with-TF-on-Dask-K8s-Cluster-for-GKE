@@ -5,14 +5,14 @@ metadata:
 spec:
   restartPolicy: Never
   containers:
-  - image: rajatr/devito-dask-kube-worker:latest
+  - image: gcr.io/devito-with-tf-and-dask-dist/devito-dask-kube-worker:latest
     imagePullPolicy: Always
-    args: [dask-worker, $(DASK_SCHEDULER_ADDRESS), --nthreads, '1', --no-bokeh, --memory-limit, 1GB, --death-timeout, '60']
-    name: dask-worker
+    args: [dask-worker, --nthreads, '1', --no-bokeh, --memory-limit, 2GB, --death-timeout, '60']
+    name: fwi-shot
     resources:
       requests:
-        cpu: 200m
-        memory: 1000Mi
+        cpu: 300m
+        memory: 1500Mi
       limits:
-        cpu: 200m
-        memory: 1000Mi
+        cpu: 500m
+        memory: 2000Mi
