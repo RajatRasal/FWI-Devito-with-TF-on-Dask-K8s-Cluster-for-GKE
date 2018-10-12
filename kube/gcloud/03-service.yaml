@@ -10,17 +10,12 @@ spec:
   - protocol: TCP
     port: 80
     targetPort: 8888
-    name: http
+    name: jupyter
   - protocol: TCP
     port: 8889
     targetPort: 8889
-    name: lab-http
+    name: tensorboard 
   - protocol: TCP
     port: 8787
     targetPort: 8787
-    name: status-http
-  - protocol: TCP
-    port: 6006
-    targetPort: 6006
-    name: tfboard-http
-
+    name: dask-UI 
