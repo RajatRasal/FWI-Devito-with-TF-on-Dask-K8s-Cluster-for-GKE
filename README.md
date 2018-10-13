@@ -18,11 +18,11 @@ For additional help with setting up minikube, refer to [Hello Minikube](https://
 You may also need to alter the resource requests and limits for the workers (config/worker.yaml) or the scheduler (kube/minikube/deployment.yaml).
 
 ## Instructions for running on Google Kubernetes Engine
-1. Set up a Google Cloud Platform project. Enable the Kubernetes Engine API within that project, then [configure default settings for gcloud](https://cloud.google.com/kubernetes-engine/docs/quickstart#defaults) and [create a GKE cluster](https://cloud.google.com/kubernetes-engine/docs/quickstart#create_cluster). The tutorial code in the notebooks has been tested primarily on a cluster with 2 nodes each of type n1-highmem-4 (4 vCPUs, 26 GB memory).
-2. `gcloud container clusters update YOUR_CLUSTER_NAME --enable-legacy-authorization` to ensure there is no need for RBAC authentication required by the latest versions of kubernetes.
+1. Set up a Google Cloud Platform project. Enable the Kubernetes Engine API within that project, then [configure default settings for gcloud](https://cloud.google.com/kubernetes-engine/docs/quickstart#defaults) and [create a GKE cluster](https://cloud.google.com/kubernetes-engine/docs/quickstart#create_cluster). The code in the notebooks has been tested primarily on a cluster with 2 nodes each of type n1-highmem-4 (4 vCPUs, 26 GB memory).
+2. `gcloud container clusters update YOUR_CLUSTER_NAME --enable-legacy-authorization` to ensure there is no need for RBAC authentication by Kubernetes.
 3. Create a data storage bucket called `fwi-data`. If you want to use another name, then the `c.GoogleStorageContentManager.default_path` field in `config/jupyter-config.py` must be changed to the name of your bucket.
 4. `gsutil cp notebooks/* gs://fwi-data` to copy all the notebooks into the storage bucket.
 5. Pushing docker images to container registries, which will eventually be deployed inside pods in the K8s cluster, is also handled by `docker-compose.yaml`. In this case, the images are being pushed to [GCP's container registry](https://cloud.google.com/container-registry/docs/quickstart). Change the `image` option under `scheduler_gcloud` and `worker_gcloud` your own google cloud container registry. Then run `docker-compose build gcloud_scheduler && docker-compose push gcloud_scheduler`. 
-6. Run all the configuration yaml files in `kube/gcloud` with `kubectl apply -f kube/gcloud`. 
+6. Run all the configuration yaml files in `kube/gcloud` with `kubectl apply -f kube/gcloud`.
 7. Open the IP address returned by `kubectl get svc | grep svc-notebook | awk '{print $4 ":80"}` to view and run the notebooks.
-
+8. Remember to disable billing afterwards to avoid being charged unnecessarily. 
